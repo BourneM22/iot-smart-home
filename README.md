@@ -1,4 +1,4 @@
-# Smart Home Gesture Control IoT Project
+# Smart Home Gesture Control IoT Project V1
 
 A real-time hand gesture recognition system that controls smart home devices using computer vision and IoT integration with Blynk platform.
 
