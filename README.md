@@ -1,171 +1,293 @@
-# Smart Home Gesture Control IoT Project V1
+# Smart Home Gesture Control IoT Project V2 - Advanced Edition
 
-A real-time hand gesture recognition system that controls smart home devices using computer vision and IoT integration with Blynk platform.
+A sophisticated real-time hand gesture recognition system that controls smart home devices using advanced computer vision and IoT integration with Blynk platform.
 
-## Features
+## 🎯 Features
 
-- **Real-time Hand Gesture Detection**: Recognizes hand gestures for numbers 1-5 using MediaPipe
-- **Live Camera Feed**: Uses OpenCV for real-time video processing
-- **IoT Integration**: Connected to Blynk platform for remote monitoring and control
-- **Smart Home Control**: Each gesture (1-5) controls a different smart home device
-- **Stable Gesture Recognition**: Implements gesture stability checking to prevent false triggers
+- **Advanced Gesture Recognition**: Recognizes complex hand poses and motion gestures
+- **Static Poses**: 👌 OK, ✌️ Peace, 👍👎 Thumbs, 🤘 Rock, 🤟 Love, 🤙 Call Me, ✊ Fist, ✋ Open Hand
+- **Motion Gestures**: 👋 Wave, ← Swipe Left, → Swipe Right
+- **Live Camera Feed**: Uses OpenCV for real-time video processing with motion trails
+- **Advanced IoT Integration**: Connected to Blynk platform with 12 virtual pins
+- **Smart Home Control**: Each gesture controls different smart home devices and scenes
+- **Intelligent Detection**: Multi-layer validation with gesture stability checking
 
-## Gesture Mapping
+## 🤚 Gesture Mapping
 
-| Gesture | Device | Description |
+### Static Poses
+| Gesture | Device/Action | Description |
+|---------|---------------|-------------|
+| 👍 Thumbs Up | Living Room Light | Toggle ON |
+| 👎 Thumbs Down | Living Room Light | Turn OFF |
+| 👌 OK Sign | Bedroom Light | Toggle |
+| ✌️ Peace Sign | Ceiling Fan | Toggle |
+| 🤘 Rock Sign | Sound System | Toggle |
+| 🤟 Love Sign | Mood Lighting | Toggle |
+| 🤙 Call Me | Phone Notifications | Toggle |
+| ✊ Fist | All Devices | Turn OFF |
+| ✋ Open Hand | All Devices | Turn ON |
+
+### Motion Gestures
+| Gesture | Action | Description |
 |---------|--------|-------------|
-| 1 finger | Device 1 | Living Room Light |
-| 2 fingers | Device 2 | Bedroom Light |
-| 3 fingers | Device 3 | Ceiling Fan |
-| 4 fingers | Device 4 | Air Conditioner |
-| 5 fingers | Device 5 | Television |
+| 👋 Wave | Welcome Mode | Activate greeting sequence |
+| ← Swipe Left | Previous Scene | Switch to previous lighting scene |
+| → Swipe Right | Next Scene | Switch to next lighting scene |
 
-## Prerequisites
+## 📋 Prerequisites
 
-- Python 3.7 or higher
+- Python 3.7 or higher (tested on Python 3.13)
 - Webcam or camera device
 - Blynk account and app
 - Internet connection for Blynk IoT
 
-## Installation
+## 🚀 Installation
 
-1. **Clone or download the project files**
+### 1. Clone or Download Project Files
 
-2. **Install required dependencies**:
-   ```bash
-   pip install -r requirements.txt
+### 2. Install Required Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+**Dependencies include:**
+- opencv-python (computer vision)
+- BlynkLib (IoT integration)
+- numpy (numerical operations)
+
+### 3. Set Up Blynk App
+
+#### Download Blynk App:
+- **iOS**: [App Store](https://apps.apple.com/app/blynk-iot/id808760481)
+- **Android**: [Google Play](https://play.google.com/store/apps/details?id=cc.blynk)
+
+#### Create New Project:
+1. Open Blynk app and create account
+2. Tap **"Create New Project"**
+3. Project settings:
+   - **Name**: "Smart Home Gesture Control"
+   - **Hardware**: "Generic Board"
+   - **Connection**: "WiFi"
+4. Tap **"Create Project"**
+
+#### Get Auth Token:
+- You'll receive an **Auth Token** via email
+- Or tap the **settings icon** (⚙️) in your project
+- Copy the **Auth Token**
+
+#### Add Widgets to Project:
+1. **Value Display** (V0) - Current gesture code
+2. **LED Indicators** (V1-V11) - Device status for each gesture
+3. **Terminal** (V20) - Advanced gesture status messages
+
+### 4. Configure the Project
+1. Open `config.py`
+2. Replace the auth token:
+   ```python
+   BLYNK_AUTH_TOKEN = "your_actual_token_here"
    ```
+3. Adjust camera settings if needed (usually defaults work fine)
 
-3. **Set up Blynk**:
-   - Download the Blynk app on your smartphone
-   - Create a new project
-   - Get your Auth Token from project settings
-   - Add the following widgets to your project:
-     - Value Display (V0) - Current Gesture
-     - LED widgets (V1-V5) - Device status indicators
-     - Terminal (V10) - System status messages
+## 🎮 Usage
 
-4. **Configure the project**:
-   - Open `config.py`
-   - Replace `P7DzRsVE5E9scx3EwvUW0Qeg8koHZnKO` with your actual Blynk auth token
-   - Adjust camera and detection settings if needed
+### 1. Run the Advanced Application
+```bash
+python main_advanced.py
+```
 
-## Usage
+### 2. System Startup
+- **Calibration**: Keep hand out of view for 30 frames (~1 second)
+- **Detection Zone**: Blue rectangle shows where to make gestures
+- **Ready**: System will show "Advanced Gesture System Ready!"
 
-1. **Run the main application**:
-   ```bash
-   python main.py
-   ```
+### 3. Making Gestures
 
-2. **Control the system**:
-   - Show hand gestures (1-5 fingers) in front of the camera
-   - Each gesture will activate the corresponding device
-   - Monitor device status through the Blynk app
-   - Press 'q' to quit the application
-   - Press 's' to show system status
+#### Static Poses:
+- Hold gesture **steady for 1 second**
+- Keep hand in blue detection zone
+- Face palm toward camera
+- Make clear, distinct poses
 
-3. **Blynk App Monitoring**:
-   - View current gesture on V0 display
-   - See device status on LED widgets (V1-V5)
-   - Check system messages in terminal widget (V10)
+#### Motion Gestures:
+- **Wave**: Move hand left-right repeatedly (3+ oscillations)
+- **Swipe Left**: Move hand from right to left across screen
+- **Swipe Right**: Move hand from left to right across screen
 
-## Project Structure
+### 4. System Controls
+- **'q'** - Quit application
+- **'s'** - Show system status
+- **'r'** - Recalibrate detection
+- **'g'** - Show gesture statistics (NEW!)
+
+### 5. Blynk App Monitoring
+- **V0**: Current gesture code
+- **V1-V11**: Device status LEDs
+- **V20**: Gesture status messages
+
+## 📁 Project Structure
 
 ```
 Project/
-├── main.py                 # Main application entry point
-├── gesture_detector.py     # Hand gesture detection logic
-├── camera_handler.py       # Camera management and video feed
-├── blynk_controller.py     # Blynk IoT integration
-├── config.py              # Configuration settings
-├── requirements.txt       # Python dependencies
-└── README.md              # This documentation
+├── main_advanced.py           # Advanced gesture recognition system (USE THIS)
+├── main.py                    # Legacy simple system (backup)
+├── advanced_gesture_detector.py  # Complex gesture detection logic
+├── blynk_controller.py        # Enhanced Blynk IoT integration
+├── config.py                  # Configuration with gesture mappings
+├── requirements.txt           # Python dependencies
+├── GESTURE_GUIDE.md          # Detailed gesture instructions
+├── BLYNK_SETUP_GUIDE.md      # Comprehensive Blynk setup
+└── README.md                 # This documentation
 ```
 
-## Technical Details
+## 🔧 Technical Details
 
-### Hand Gesture Detection
-- Uses MediaPipe for hand landmark detection
-- Analyzes finger positions to determine extended fingers
-- Implements gesture stability checking to prevent false positives
+### Advanced Gesture Detection
+- **Multi-layer Analysis**: Skin detection, shape validation, convexity analysis
+- **HSV Color Space**: Better skin detection across lighting conditions
+- **Motion Tracking**: 15-point position history for gesture trails
+- **Convexity Defects**: Sophisticated finger counting and pose analysis
+- **Gesture Classification**: Complex logic combining multiple features
 
-### Camera Integration
-- OpenCV-based video capture
-- Threaded frame processing for smooth performance
-- Configurable camera settings (resolution, FPS)
+### Enhanced Camera Integration
+- **Larger Detection Zone**: 80% height, 90% width coverage
+- **Motion Trail Visualization**: See hand movement paths
+- **Adaptive Background**: Automatic calibration and noise reduction
+- **Real-time Processing**: Optimized for smooth 30fps performance
 
-### IoT Integration
-- Blynk platform for remote monitoring and control
-- Virtual pins for device control and status display
-- Real-time notifications and status updates
+### Advanced IoT Integration
+- **12 Virtual Pins**: V0, V1-V11, V20 for comprehensive control
+- **Smart Rate Limiting**: Prevents server overload
+- **Error Recovery**: Automatic reconnection and retry logic
+- **Action Types**: Toggle, on/off, momentary activation
+- **Enhanced Status**: Real-time gesture and device feedback
 
-## Troubleshooting
+## 🛠️ Troubleshooting
 
 ### Common Issues
 
-1. **Camera not working**:
-   - Check if camera is connected and not used by other applications
-   - Try changing `CAMERA_INDEX` in `config.py` (0, 1, 2, etc.)
+#### 1. Gesture Not Detected
+- **Check lighting**: Ensure good, even lighting
+- **Hand position**: Keep hand in blue detection zone
+- **Hold steady**: Static poses need 1 second stability
+- **Recalibrate**: Press 'r' to recalibrate background
 
-2. **Blynk connection issues**:
-   - Verify your auth token is correct
-   - Check internet connection
-   - Ensure Blynk app project is configured with correct virtual pins
+#### 2. Wrong Gesture Detected
+- **Make distinct gestures**: Ensure clear hand poses
+- **Check background**: Avoid cluttered or skin-colored backgrounds
+- **Adjust distance**: Stay 2-4 feet from camera
+- **Better lighting**: Avoid shadows and backlighting
 
-3. **Gesture detection not accurate**:
-   - Ensure good lighting conditions
-   - Keep hand clearly visible in camera frame
-   - Adjust `MIN_DETECTION_CONFIDENCE` in `config.py`
+#### 3. Motion Gestures Not Working
+- **Larger movements**: Make more deliberate motions
+- **Consistent direction**: Maintain steady left/right movement
+- **Moderate speed**: Not too fast or too slow
+- **Stay in zone**: Keep hand in detection area during motion
 
-4. **Performance issues**:
-   - Lower camera resolution in `config.py`
-   - Reduce FPS if needed
-   - Close other applications using camera/CPU
+#### 4. Blynk Connection Issues
+- **Project running**: Ensure play button is pressed in Blynk console
+- **Auth token**: Verify token is correct in config.py
+- **Internet**: Check internet connection
+- **Virtual pins**: Confirm widgets use correct pin numbers
+
+#### 5. Performance Issues
+- **Close other apps**: Free up camera and CPU resources
+- **Lower resolution**: Adjust CAMERA_WIDTH/HEIGHT in config.py
+- **Reduce FPS**: Lower CAMERA_FPS if needed
+- **Better hardware**: Modern multi-core processor recommended
 
 ### System Requirements
-- **CPU**: Modern multi-core processor recommended
+- **CPU**: Modern multi-core processor (Intel i5/AMD Ryzen 5 or better)
 - **RAM**: Minimum 4GB, 8GB recommended
-- **Camera**: Any USB webcam or built-in camera
-- **OS**: Windows, macOS, or Linux
+- **Camera**: Any USB webcam or built-in camera (720p or better)
+- **OS**: Windows 10+, macOS 10.14+, or Linux Ubuntu 18.04+
+- **Internet**: Stable connection for Blynk IoT
 
-## Customization
+## 🎨 Customization
 
-### Adding More Gestures
-1. Modify `count_extended_fingers()` in `gesture_detector.py`
-2. Add new virtual pins in `config.py`
-3. Update device mapping in `blynk_controller.py`
+### Adding New Gestures
+1. **Define gesture logic** in `advanced_gesture_detector.py`
+2. **Add gesture mapping** in `config.py` GESTURE_DEVICE_MAPPING
+3. **Update Blynk pins** and add corresponding widgets
+4. **Test and calibrate** new gesture recognition
 
 ### Changing Device Actions
-1. Edit `trigger_device_action()` in `blynk_controller.py`
-2. Update `DEVICE_NAMES` in `config.py`
-3. Configure corresponding widgets in Blynk app
+1. **Edit gesture mappings** in `config.py`
+2. **Update Blynk virtual pins** as needed
+3. **Modify action types**: toggle, on, off, activate
+4. **Configure Blynk widgets** for new devices
 
 ### Adjusting Detection Sensitivity
-- Modify confidence thresholds in `config.py`
-- Adjust `GESTURE_STABILITY_THRESHOLD` for gesture confirmation
-- Fine-tune MediaPipe parameters in `gesture_detector.py`
+- **Gesture stability**: Modify GESTURE_STABILITY_THRESHOLD in config.py
+- **Detection confidence**: Adjust skin color ranges in detector
+- **Motion thresholds**: Tune swipe distance and wave frequency
+- **Area limits**: Modify hand size detection ranges
 
-## Future Enhancements
+## 🚀 Advanced Features
 
-- Support for more complex gestures
-- Voice command integration
-- Multiple camera support
-- Machine learning-based gesture recognition
-- Integration with other IoT platforms
-- Mobile app for direct control
+### Gesture Statistics
+- Press **'g'** to view detection statistics
+- See which gestures you use most
+- Track system performance and accuracy
 
-## License
+### Motion Trail Visualization
+- See colored trail following your hand movement
+- Helps with motion gesture debugging
+- Visual feedback for gesture paths
+
+### Multi-layer Validation
+- **Skin detection** with multiple tone ranges
+- **Shape analysis** for hand-like objects
+- **Motion tracking** for gesture trails
+- **Stability checking** to prevent false triggers
+
+### Smart IoT Integration
+- **Rate limiting** prevents server flooding
+- **Error recovery** with automatic reconnection
+- **Action variety** with different control types
+- **Status feedback** through multiple channels
+
+## 🔮 Future Enhancements
+
+- **Machine Learning**: AI-powered gesture recognition
+- **Voice Commands**: Combined voice and gesture control
+- **Multiple Users**: Multi-person gesture recognition
+- **Mobile App**: Direct smartphone control interface
+- **Cloud Integration**: AWS/Google Cloud IoT integration
+- **Gesture Recording**: Custom gesture training system
+
+## 📄 License
 
 This project is open source and available under the MIT License.
 
-## Support
+## 🆘 Support
 
-For issues and questions:
-1. Check the troubleshooting section
-2. Review configuration settings
-3. Test individual components separately
-4. Check Blynk app setup and virtual pin configuration
+### Getting Help:
+1. **Check GESTURE_GUIDE.md** for detailed gesture instructions
+2. **Review BLYNK_SETUP_GUIDE.md** for IoT setup help
+3. **Test components separately** using system controls
+4. **Check gesture statistics** with 'g' key
+5. **Verify Blynk setup** with virtual pin configuration
+
+### Debug Information:
+- **System status**: Press 's' for detailed status
+- **Gesture stats**: Press 'g' for detection statistics
+- **Recalibration**: Press 'r' if detection degrades
+- **Console output**: Check terminal for error messages
 
 ---
 
-**Note**: Make sure to keep your Blynk auth token secure and never share it publicly.
+## 🎉 Quick Start Summary
+
+1. **Install**: `pip install -r requirements.txt`
+2. **Setup Blynk**: Create project, get auth token, add widgets
+3. **Configure**: Update `config.py` with your auth token
+4. **Run**: `python main_advanced.py`
+5. **Calibrate**: Keep hand out of view during startup
+6. **Gesture**: Make poses in blue detection zone
+7. **Control**: Watch your smart home respond to gestures!
+
+**🏠 Welcome to the future of gesture-controlled smart homes! ✨**
+
+---
+
+**⚠️ Security Note**: Keep your Blynk auth token secure and never share it publicly.
