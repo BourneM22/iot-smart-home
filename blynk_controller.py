@@ -73,9 +73,9 @@ class BlynkController:
                     return False
         return False
     
-    def update_gesture(self, gesture_number: Optional[int]):
+    def update_gesture(self, gesture_name: Optional[str]):
         """Update the current gesture and trigger corresponding actions"""
-        if gesture_number is None:
+        if gesture_name is None:
             return
             
         # Rate limiting to prevent flooding Blynk
@@ -83,20 +83,21 @@ class BlynkController:
         if current_time - self.last_update_time < self.min_update_interval:
             return
             
-        if gesture_number != self.current_gesture:
-            self.current_gesture = gesture_number
+        if gesture_name != self.current_gesture:
+            self.current_gesture = gesture_name
             self.last_update_time = current_time
             
-            print(f"🎯 Gesture {gesture_number} detected!")
+            print(f"🎯 Gesture '{gesture_name}' detected!")
             
             if self.blynk:
-                # Send gesture to Blynk display
-                success = self.safe_virtual_write(self.GESTURE_DISPLAY_PIN, gesture_number)
+                # Send gesture name to Blynk display (use hash for numeric display)
+                gesture_code = hash(gesture_name) % 1000
+                success = self.safe_virtual_write(self.GESTURE_DISPLAY_PIN, gesture_code)
                 if success:
-                    print(f"📱 Sent gesture {gesture_number} to Blynk display")
+                    print(f"📱 Sent gesture '{gesture_name}' (code: {gesture_code}) to Blynk")
                 
                 # Trigger device actions
-                self.trigger_device_action(gesture_number)
+                self.trigger_advanced_gesture_action(gesture_name)
             else:
                 print("📱 Offline mode - gesture detected but not sent to Blynk")
     
@@ -135,6 +136,57 @@ class BlynkController:
                     print(f"📱 Status sent: {status_msg}")
                 except Exception as e:
                     print(f"❌ Failed to send status message: {e}")
+    
+    def trigger_advanced_gesture_action(self, gesture_name: str):
+        """Trigger actions based on advanced gesture recognition"""
+        if not self.blynk:
+            return
+        
+        # Import gesture mapping
+        try:
+            from config import GESTURE_DEVICE_MAPPING
+        except ImportError:
+            print("❌ Could not import gesture mapping")
+            return
+        
+        if gesture_name not in GESTURE_DEVICE_MAPPING:
+            print(f"⚠️  Unknown gesture: {gesture_name}")
+            return
+        
+        gesture_config = GESTURE_DEVICE_MAPPING[gesture_name]
+        device_name = gesture_config['device']
+        action = gesture_config['action']
+        pin = gesture_config['pin']
+        
+        print(f"📱 Executing: {device_name} - {action}")
+        
+        # Execute action based on type
+        if action == 'toggle':
+            # Toggle device (simple on/off)
+            success = self.safe_virtual_write(pin, 1)
+            time.sleep(0.2)
+            self.safe_virtual_write(pin, 0)  # Reset after brief activation
+            
+        elif action == 'on':
+            success = self.safe_virtual_write(pin, 1)
+            
+        elif action == 'off':
+            success = self.safe_virtual_write(pin, 0)
+            
+        elif action == 'activate':
+            # Momentary activation for scenes/modes
+            success = self.safe_virtual_write(pin, 1)
+            time.sleep(0.1)
+            self.safe_virtual_write(pin, 0)
+        
+        if success:
+            print(f"✅ {device_name} {action} executed successfully")
+            
+            # Send status message
+            status_msg = f"🎯 {gesture_name.replace('_', ' ').title()}: {device_name} {action}"
+            self.safe_virtual_write(20, status_msg)  # V20 for advanced gesture status
+        else:
+            print(f"❌ Failed to execute {device_name} {action}")
     
     def run(self):
         """Run Blynk connection (non-blocking)"""

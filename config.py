@@ -30,7 +30,7 @@ VIRTUAL_PINS = {
     'TERMINAL': 10         # V10 - Terminal for status messages
 }
 
-# Device Names (for display purposes)
+# Device Names (for display purposes) - Legacy number mapping
 DEVICE_NAMES = {
     1: "Living Room Light",
     2: "Bedroom Light", 
@@ -38,3 +38,26 @@ DEVICE_NAMES = {
     4: "Air Conditioner",
     5: "Television"
 }
+
+# Advanced Gesture to Device Mapping
+GESTURE_DEVICE_MAPPING = {
+    # Static Poses
+    'thumbs_up': {'device': 'Living Room Light', 'action': 'toggle', 'pin': 1},
+    'thumbs_down': {'device': 'Living Room Light', 'action': 'off', 'pin': 1},
+    'ok': {'device': 'Bedroom Light', 'action': 'toggle', 'pin': 2},
+    'peace': {'device': 'Ceiling Fan', 'action': 'toggle', 'pin': 3},
+    'rock': {'device': 'Sound System', 'action': 'toggle', 'pin': 4},
+    'love': {'device': 'Mood Lighting', 'action': 'toggle', 'pin': 5},
+    'call_me': {'device': 'Phone Notifications', 'action': 'toggle', 'pin': 6},
+    'fist': {'device': 'All Devices', 'action': 'off', 'pin': 7},
+    'open_hand': {'device': 'All Devices', 'action': 'on', 'pin': 8},
+    
+    # Motion Gestures
+    'wave': {'device': 'Welcome Mode', 'action': 'activate', 'pin': 9},
+    'swipe_left': {'device': 'Previous Scene', 'action': 'activate', 'pin': 10},
+    'swipe_right': {'device': 'Next Scene', 'action': 'activate', 'pin': 11},
+}
+
+# Gesture Categories
+STATIC_GESTURES = ['thumbs_up', 'thumbs_down', 'ok', 'peace', 'rock', 'love', 'call_me', 'fist', 'open_hand', 'crossed']
+MOTION_GESTURES = ['wave', 'swipe_left', 'swipe_right']
