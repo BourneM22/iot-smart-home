@@ -1,0 +1,6 @@
+opencv-python>=4.5.0
+mediapipe>=0.8.0
+blynk-library-python>=1.0.0
+numpy>=1.21.0
+Pillow>=8.0.0
+requests>=2.25.0
